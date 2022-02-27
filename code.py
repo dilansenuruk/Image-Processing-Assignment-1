@@ -38,3 +38,84 @@ ax[1].set_title("Intensity Transformed")
 ax[1].axis("off")
 
 plt.show()
+
+
+
+
+
+
+
+img2 = cv.imread(r"C:\Users\User\Desktop\ML\images\brain_proton_density_slice.png", cv.IMREAD_GRAYSCALE)
+assert img2 is not None
+
+t1 = np.linspace(10, 10, 216)
+t2 = np.linspace(200, 200, 40)
+t3 = np.linspace(10, 10, 0)
+t = np.concatenate((t1, t2, t3), axis = 0).astype(np.uint8)
+
+r1 = np.linspace(10, 10, 186)
+r2 = np.linspace(200, 200, 30)
+r3 = np.linspace(10, 10, 40)
+r = np.concatenate((r1, r2, r3), axis = 0).astype(np.uint8)
+
+assert len(t) == 256
+img2_t = cv.LUT(img2, t)
+
+assert len(r) == 256
+img2_r = cv.LUT(img2, r)
+
+cv.namedWindow("Image", cv.WINDOW_AUTOSIZE)
+cv.imshow("Image", img2)
+cv.waitKey(1000)
+cv.imshow("Image", img2_t)
+cv.waitKey(1000)
+cv.imshow("Image", img2_r)
+cv.waitKey(1000)
+cv.destroyAllWindows()
+
+fig, ax = plt.subplots(1, 3, figsize = (18, 6))
+
+ax[0].imshow(cv.cvtColor(img2, cv.COLOR_BGR2RGB))
+ax[0].set_title("Original")
+ax[0].axis("off")
+
+ax[1].imshow(cv.cvtColor(img2_t, cv.COLOR_BGR2RGB))
+ax[1].set_title("White Matter")
+ax[1].axis("off")
+
+ax[2].imshow(cv.cvtColor(img2_r, cv.COLOR_BGR2RGB))
+ax[2].set_title("Gray Matter")
+ax[2].axis("off")
+
+fig, ax = plt.subplots(1, 2, figsize = (18, 6))
+ax[0].plot(t)
+ax[0].set_title("Intensity Transformation - White Matter")
+ax[0].grid("on")
+
+ax[1].plot(r)
+ax[1].set_title("Intensity Transformation - Gray Matter")
+ax[1].grid("on")
+
+plt.show()
+
+
+
+
+
+
+
+img3 = cv.imread(r"C:\Users\User\Desktop\ML\images\highlights_and_shadows.jpg", cv.IMREAD_GRAYSCALE)
+assert img3 is not None
+
+cv.namedWindow("Image", cv.WINDOW_AUTOSIZE)
+cv.imshow("Image", img3)
+cv.waitKey(1000)
+cv.destroyAllWindows()
+
+gamma = [0.2, 0.8, 1.2, 1.8]
+
+lab = cv.cvtColor(img3, cv.COLOR_BGR2LAB)
+
+for i in gamma:
+    k = np.array([(p/255)**(i)*255 for p in range(0, 256)]).astype(np.uint8)
+    h = cv.LUT(img3, k)
