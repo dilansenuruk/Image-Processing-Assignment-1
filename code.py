@@ -163,3 +163,48 @@ for i in hist_img3_lab:
     j += 1
 
 plt.show()
+
+
+
+
+
+
+
+def histogramEqualization(img4):
+    l = np.zeros(256)
+    size = img4.shape[0] * img4.shape[1]
+    for i in range(img4.shape[0]):
+        for j in range(img4.shape[1]):
+            for k in range(256):
+                if (img4[i, j] == k):
+                    l[k] += 1
+                    break
+
+    for i in range(1, 256):
+        l[i] = l[i] + l[i - 1]
+
+    for i in range(256):
+        l[i] = round(l[i] * (i / size))
+        
+    for i in range(img4.shape[0]):
+        for j in range(img4.shape[1]):
+            for k in range(256):
+                if (img4[i, j] == k):
+                    img4[i, j] = l[3*k]
+                    break
+    return img4
+
+img4 = cv.imread(r"C:\Users\User\Desktop\ML\images\shells.png", cv.IMREAD_GRAYSCALE)
+fig, ax = plt.subplots(2, 2, figsize=(16, 8))
+ax[0, 0].plot(cv.calcHist([img4], [0], None, [256], [0, 256]))
+ax[0, 0].set_title("Original Histogram")
+ax[0, 1].imshow(cv.cvtColor(img4, cv.COLOR_BGR2RGB))
+ax[0, 1].set_title("Original Image")
+ax[0, 1].axis("off")
+img4_e = histogramEqualization(img4)
+ax[1, 0].plot(cv.calcHist([img4_e], [0], None, [256], [0, 256]))
+ax[1, 0].set_title("Equalized Histogram")
+ax[1, 1].imshow(cv.cvtColor(img4_e, cv.COLOR_BGR2RGB))
+ax[1, 1].set_title("Histogram Equalized Image")
+ax[1, 1].axis("off")
+plt.show()
