@@ -133,3 +133,33 @@ for i in gamma:
     ax[1].imshow(cv.cvtColor(lab, cv.COLOR_LAB2RGB))
     ax[1].set_title("Gamma Corrected (Gamma = " + str(i) + ")")
     ax[1].axis("off")
+
+
+
+
+
+
+
+hist_img3 = cv.calcHist([img3], [0], None, [256], [0, 256])
+fig, ax = plt.subplots(1, 2, figsize=(18, 4))
+ax[0].imshow(cv.cvtColor(img3, cv.COLOR_BGR2RGB))
+ax[0].axis("off")
+ax[0].set_title("Original")
+
+ax[1].plot(hist_img3)
+ax[1].set_title("Histogram for Original Image")
+
+fig, ax = plt.subplots(2, 2, figsize=(16, 8))
+k = 0
+f = 0
+j = 0
+for i in hist_img3_lab:
+    ax[k, f].plot(i)
+    ax[k, f].set_title("Histogram for Gamma Corrected Image (Gamma = " + str(gamma[j]) + ")")
+    f += 1
+    if (f == 2):
+        k += 1
+        f = 0
+    j += 1
+
+plt.show()
