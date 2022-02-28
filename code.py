@@ -104,7 +104,7 @@ plt.show()
 
 
 
-img3 = cv.imread(r"C:\Users\User\Desktop\ML\images\highlights_and_shadows.jpg", cv.IMREAD_GRAYSCALE)
+img3 = cv.imread(r"C:\Users\User\Desktop\ML\images\highlights_and_shadows.jpg", cv.IMREAD_COLOR)
 assert img3 is not None
 
 cv.namedWindow("Image", cv.WINDOW_AUTOSIZE)
@@ -112,10 +112,21 @@ cv.imshow("Image", img3)
 cv.waitKey(1000)
 cv.destroyAllWindows()
 
-gamma = [0.2, 0.8, 1.2, 1.8]
+gamma = [0.2, 0.8, 1.2, 2.0]
 
 lab = cv.cvtColor(img3, cv.COLOR_BGR2LAB)
 
 for i in gamma:
     k = np.array([(p/255)**(i)*255 for p in range(0, 256)]).astype(np.uint8)
-    h = cv.LUT(img3, k)
+    for x in range(0, len(lab)):
+        for y in range(0, len(lab[0])):
+            lab[x, y][0] = ((lab[x, y][0] / 255)**(i)) * 255
+    
+    fig, ax = plt.subplots(1, 2, figsize = (12, 6))
+    ax[0].plot(k)
+    ax[0].set_title("Intensity Curve (Gamma = " + str(i) + ")")
+    ax[0].grid("on")
+    
+    ax[1].imshow(cv.cvtColor(lab, cv.COLOR_LAB2RGB))
+    ax[1].set_title("Gamma Corrected (Gamma = " + str(i) + ")")
+    ax[1].axis("off")
