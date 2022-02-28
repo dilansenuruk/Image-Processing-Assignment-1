@@ -113,6 +113,7 @@ cv.waitKey(1000)
 cv.destroyAllWindows()
 
 gamma = [0.2, 0.8, 1.2, 2.0]
+hist_img3_lab = []
 
 lab = cv.cvtColor(img3, cv.COLOR_BGR2LAB)
 
@@ -122,9 +123,11 @@ for i in gamma:
         for y in range(0, len(lab[0])):
             lab[x, y][0] = ((lab[x, y][0] / 255)**(i)) * 255
     
+    hist_img3_lab.append(cv.calcHist([lab], [0], None, [256], [0, 256]))
+    
     fig, ax = plt.subplots(1, 2, figsize = (12, 6))
     ax[0].plot(k)
-    ax[0].set_title("Intensity Curve (Gamma = " + str(i) + ")")
+    ax[0].set_title("L* Plane Curve (Gamma = " + str(i) + ")")
     ax[0].grid("on")
     
     ax[1].imshow(cv.cvtColor(lab, cv.COLOR_LAB2RGB))
