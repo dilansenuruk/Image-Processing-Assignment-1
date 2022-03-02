@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2 as cv
 
+#code for question (1)------------------------------------------------------------------------------
 img1 = cv.imread(r"C:\Users\User\Desktop\ML\images\emma_gray.jpg", cv.IMREAD_GRAYSCALE)
 assert img1 is not None
 
@@ -44,7 +45,7 @@ plt.show()
 
 
 
-
+#code for question (2)------------------------------------------------------------------------------
 img2 = cv.imread(r"C:\Users\User\Desktop\ML\images\brain_proton_density_slice.png", cv.IMREAD_GRAYSCALE)
 assert img2 is not None
 
@@ -103,7 +104,7 @@ plt.show()
 
 
 
-
+#code for question (3)(a)------------------------------------------------------------------------------
 img3 = cv.imread(r"C:\Users\User\Desktop\ML\images\highlights_and_shadows.jpg", cv.IMREAD_COLOR)
 assert img3 is not None
 
@@ -139,7 +140,7 @@ for i in gamma:
 
 
 
-
+#code for question (3)(b)------------------------------------------------------------------------------
 hist_img3 = cv.calcHist([img3], [0], None, [256], [0, 256])
 fig, ax = plt.subplots(1, 2, figsize=(18, 4))
 ax[0].imshow(cv.cvtColor(img3, cv.COLOR_BGR2RGB))
@@ -169,7 +170,7 @@ plt.show()
 
 
 
-
+#code for question (4)------------------------------------------------------------------------------
 def histogramEqualization(img4):
     l = np.zeros(256)
     size = img4.shape[0] * img4.shape[1]
@@ -214,7 +215,7 @@ plt.show()
 
 
 
-
+#code for question (7)(a)------------------------------------------------------------------------------
 img7 = cv.imread(r"C:\Users\User\Desktop\ML\images\daisy.jpg", cv.IMREAD_COLOR)
 img7_original = img7.copy()
 mask = np.zeros(img7.shape[:2], np.uint8)
@@ -254,7 +255,7 @@ plt.show()
 
 
 
-
+#code for question (b)------------------------------------------------------------------------------
 img7_blurred = cv.blur(img7_bgd, (9, 9), 2)
 img7_enhanced = cv.add(img7_blurred, img7_fgd)
 
