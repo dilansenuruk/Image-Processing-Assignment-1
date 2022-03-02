@@ -208,3 +208,64 @@ ax[1, 1].imshow(cv.cvtColor(img4_e, cv.COLOR_BGR2RGB))
 ax[1, 1].set_title("Histogram Equalized Image")
 ax[1, 1].axis("off")
 plt.show()
+
+
+
+
+
+
+
+img7 = cv.imread(r"C:\Users\User\Desktop\ML\images\daisy.jpg", cv.IMREAD_COLOR)
+img7_original = img7.copy()
+mask = np.zeros(img7.shape[:2], np.uint8)
+rect = (0, 100, 561, 500)
+fgdModel = np.zeros((1, 65), np.float64)
+bgdModel = np.zeros((1, 65), np.float64)
+
+cv.grabCut(img7, mask, rect, bgdModel, fgdModel, 5, cv.GC_INIT_WITH_RECT)
+
+mask1 = np.where((mask==0) | (mask==2), 0, 1).astype("uint8")
+img7_fgd = img7*mask1[:, :, np.newaxis]
+mask2 = np.where((mask==1) | (mask==3), 0, 1).astype("uint8")
+img7_bgd = img7*mask2[:, :, np.newaxis]
+
+fig, ax = plt.subplots(1, 4, figsize=(18, 6))
+
+ax[0].imshow(cv.cvtColor(img7_original, cv.COLOR_BGR2RGB))
+ax[0].set_title("Original")
+ax[0].axis("off")
+
+ax[1].imshow(mask1, cmap = "gray")
+ax[1].set_title("Original")
+ax[1].axis("off")
+
+ax[2].imshow(cv.cvtColor(img7_fgd, cv.COLOR_BGR2RGB))
+ax[2].set_title("Fore Ground")
+ax[2].axis("off")
+
+ax[3].imshow(cv.cvtColor(img7_bgd, cv.COLOR_BGR2RGB))
+ax[3].set_title("Back Ground")
+ax[3].axis("off")
+
+plt.show()
+
+
+
+
+
+
+
+img7_blurred = cv.blur(img7_bgd, (9, 9), 2)
+img7_enhanced = cv.add(img7_blurred, img7_fgd)
+
+fig, ax = plt.subplots(1, 2, figsize=(9, 6))
+
+ax[0].imshow(cv.cvtColor(img7_original, cv.COLOR_BGR2RGB))
+ax[0].set_title("Original")
+ax[0].axis("off")
+
+ax[1].imshow(cv.cvtColor(img7_enhanced, cv.COLOR_BGR2RGB))
+ax[1].set_title("Enhanced")
+ax[1].axis("off")
+
+plt.show()
